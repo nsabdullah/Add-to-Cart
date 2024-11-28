@@ -65,6 +65,7 @@ const renderHtml = (product) => {
               `;
   let div = document.createElement("div");
   div.classList.add("producdt-card");
+  div.setAttribute();
   div.innerHTML = html;
   // productGrid.innerHTML = html;
   productGrid.appendChild(div);

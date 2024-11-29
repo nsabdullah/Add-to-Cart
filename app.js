@@ -59,19 +59,61 @@ const renderHtml = (product) => {
                />
             <h3 class="product-title">${product.title}</h3>
             <p class="product-price">$${product.price}</p>
-            <button class="add-to-cart">
+            <button class="add-to-cart" onclick = "addToCart(this)">
               Add to Cart
             </button>
               `;
   let div = document.createElement("div");
   div.classList.add("producdt-card");
-  div.setAttribute();
+  div.setAttribute("data-id", product.id);
   div.innerHTML = html;
   // productGrid.innerHTML = html;
   productGrid.appendChild(div);
 };
+// add to cart
+const addToCart = (element) => {
+  let clickId = element.parentElement.getAttribute("data-id");
+  let getProduct = products.find((item) => item.id == clickId);
 
+  // check if exists
+  let existingItem = cartItem.find((item) => item.id == clickId);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    //item to add
+    let itemToAdd = {
+      id: getProduct.id,
+      title: getProduct.title,
+      price: getProduct.price,
+      quantity: 1,
+    };
+
+    cartItem.push(itemToAdd);
+  }
+  // save to local storage
+  saveToLocalStorage();
+  console.log(cartItem);
+};
+// card list
+let cartItem = [];
+// det saved item
+const getSavedItem = () => {
+  let dataFormLocal = JSON.parse(localStorage.getItem("cartItem"));
+  if (dataFormLocal) {
+    cartItem = dataFormLocal;
+
+    //update to header cart
+    cartCount.textContent = cartItem.length;
+  }
+};
+getSavedItem();
 // fetch the products
 products.forEach((product) => {
   renderHtml(product);
 });
+
+// save to local storage
+const saveToLocalStorage = () => {
+  localStorage.setItem("cartItem", JSON.stringify(cartItem));
+};

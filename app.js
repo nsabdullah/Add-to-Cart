@@ -1,3 +1,6 @@
+// const updateCart
+
+// }
 // initial product
 const products = [
   {
@@ -50,38 +53,41 @@ const products = [
 const productGrid = document.querySelector(".product-grid");
 const cartCount = document.querySelector(".cart-count");
 
-// Render html
-const renderHtml = (product) => {
-  let html = `
-            <img src="https://picsum.photos/200"
-               alt="Product Image"
-               class="product-image"
-               />
-            <h3 class="product-title">${product.title}</h3>
-            <p class="product-price">$${product.price}</p>
-            <button class="add-to-cart" onclick = "addToCart(this)">
-              Add to Cart
-            </button>
-              `;
-  let div = document.createElement("div");
-  div.classList.add("producdt-card");
-  div.setAttribute("data-id", product.id);
-  div.innerHTML = html;
-  // productGrid.innerHTML = html;
-  productGrid.appendChild(div);
-};
-// add to cart
-const addToCart = (element) => {
-  let clickId = element.parentElement.getAttribute("data-id");
-  let getProduct = products.find((item) => item.id == clickId);
+// Cart List
+let cartItems = [];
 
-  // check if exists
-  let existingItem = cartItem.find((item) => item.id == clickId);
+// Update Cart
+const updateCart = () => {
+  let totalCartCount = cartItems.reduce(
+    (prevQuantity, item) => prevQuantity + item.quantity,
+    0
+  );
+  cartCount.textContent = totalCartCount;
+};
+
+// Get saved items
+const getSavedItem = () => {
+  let dataFromLocal = JSON.parse(localStorage.getItem("cartItems"));
+  if (dataFromLocal) {
+    cartItems = dataFromLocal;
+    // Update header cart
+    updateCart();
+  }
+};
+getSavedItem();
+
+// Add to cart
+const addToCart = (element) => {
+  let clickedItemId = element.parentElement.getAttribute("data-id");
+  let getProduct = products.find((item) => item.id == clickedItemId);
+
+  // Check if already exists
+  let existingItem = cartItems.find((item) => item.id == clickedItemId);
 
   if (existingItem) {
     existingItem.quantity += 1;
   } else {
-    //item to add
+    // Item to add
     let itemToAdd = {
       id: getProduct.id,
       title: getProduct.title,
@@ -89,31 +95,45 @@ const addToCart = (element) => {
       quantity: 1,
     };
 
-    cartItem.push(itemToAdd);
+    cartItems.push(itemToAdd);
   }
-  // save to local storage
-  saveToLocalStorage();
-  console.log(cartItem);
-};
-// card list
-let cartItem = [];
-// det saved item
-const getSavedItem = () => {
-  let dataFormLocal = JSON.parse(localStorage.getItem("cartItem"));
-  if (dataFormLocal) {
-    cartItem = dataFormLocal;
 
-    //update to header cart
-    cartCount.textContent = cartItem.length;
-  }
+  // Update header cart
+  updateCart();
+
+  // Save to localstorage
+  saveTolocalStorage();
 };
-getSavedItem();
-// fetch the products
+
+// Save to localstorage
+const saveTolocalStorage = () => {
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+};
+
+// Render html
+const renderHTMl = (product) => {
+  let html = `
+            <img
+              src="https://picsum.photos/200"
+              alt="Product Image"
+              class="product-image"
+            />
+            <h3 class="product-title">${product.title}</h3>
+            <p class="product-price">$${product.price}</p>
+            <button class="add-to-cart" onclick="addToCart(this)">
+              Add to Cart
+            </button>
+          `;
+
+  let div = document.createElement("div");
+  div.classList.add("product-card");
+  div.setAttribute("data-id", product.id);
+  div.innerHTML = html;
+
+  productGrid.appendChild(div);
+};
+
+// Fetch the products
 products.forEach((product) => {
-  renderHtml(product);
+  renderHTMl(product);
 });
-
-// save to local storage
-const saveToLocalStorage = () => {
-  localStorage.setItem("cartItem", JSON.stringify(cartItem));
-};

@@ -1,6 +1,3 @@
-// const updateCart
-
-// }
 // initial product
 const products = [
   {
@@ -97,19 +94,15 @@ const addToCart = (element) => {
 
     cartItems.push(itemToAdd);
   }
-
   // Update header cart
   updateCart();
-
   // Save to localstorage
   saveTolocalStorage();
 };
-
 // Save to localstorage
 const saveTolocalStorage = () => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
-
 // Render html
 const renderHTMl = (product) => {
   let html = `
@@ -129,7 +122,6 @@ const renderHTMl = (product) => {
   div.classList.add("product-card");
   div.setAttribute("data-id", product.id);
   div.innerHTML = html;
-
   productGrid.appendChild(div);
 };
 

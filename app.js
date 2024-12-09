@@ -46,6 +46,7 @@ const products = [
     price: 2,
   },
 ];
+
 // elements
 const productGrid = document.querySelector(".product-grid");
 const cartCount = document.querySelector(".cart-count");
@@ -77,10 +78,8 @@ getSavedItem();
 const addToCart = (element) => {
   let clickedItemId = element.parentElement.getAttribute("data-id");
   let getProduct = products.find((item) => item.id == clickedItemId);
-
   // Check if already exists
   let existingItem = cartItems.find((item) => item.id == clickedItemId);
-
   if (existingItem) {
     existingItem.quantity += 1;
   } else {
@@ -91,7 +90,6 @@ const addToCart = (element) => {
       price: getProduct.price,
       quantity: 1,
     };
-
     cartItems.push(itemToAdd);
   }
   // Update header cart
@@ -99,10 +97,12 @@ const addToCart = (element) => {
   // Save to localstorage
   saveTolocalStorage();
 };
+
 // Save to localstorage
 const saveTolocalStorage = () => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
+
 // Render html
 const renderHTMl = (product) => {
   let html = `
@@ -117,7 +117,6 @@ const renderHTMl = (product) => {
               Add to Cart
             </button>
           `;
-
   let div = document.createElement("div");
   div.classList.add("product-card");
   div.setAttribute("data-id", product.id);

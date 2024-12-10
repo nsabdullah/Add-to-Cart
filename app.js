@@ -47,12 +47,18 @@ const products = [
   },
 ];
 
+
+
 // elements
 const productGrid = document.querySelector(".product-grid");
 const cartCount = document.querySelector(".cart-count");
 
+
+
 // Cart List
 let cartItems = [];
+
+
 
 // Update Cart
 const updateCart = () => {
@@ -62,6 +68,8 @@ const updateCart = () => {
   );
   cartCount.textContent = totalCartCount;
 };
+
+
 
 // Get saved items
 const getSavedItem = () => {
@@ -73,6 +81,8 @@ const getSavedItem = () => {
   }
 };
 getSavedItem();
+
+
 
 // Add to cart
 const addToCart = (element) => {
@@ -98,10 +108,14 @@ const addToCart = (element) => {
   saveTolocalStorage();
 };
 
+
+
 // Save to localstorage
 const saveTolocalStorage = () => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
+
+
 
 // Render html
 const renderHTMl = (product) => {
@@ -123,6 +137,8 @@ const renderHTMl = (product) => {
   div.innerHTML = html;
   productGrid.appendChild(div);
 };
+
+
 
 // Fetch the products
 products.forEach((product) => {
